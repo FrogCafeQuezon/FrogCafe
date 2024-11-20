@@ -204,30 +204,40 @@
     </footer>
 	
 		 <!-- JavaScript Code -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Select all links that are anchored to elements with IDs
+        const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
 
-            smoothScrollLinks.forEach(link => {
-                link.addEventListener("click", function (e) {
-                    e.preventDefault(); // Prevent the default jump to the anchor
+        smoothScrollLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault(); // Prevent the default anchor jump to the section
 
-                    const targetId = this.getAttribute("href").substring(1); // Extract the ID
-                    const targetElement = document.getElementById(targetId); // Find the target element
+                const targetId = this.getAttribute("href").substring(1); // Get the target section ID
+                const targetElement = document.getElementById(targetId); // Find the target element
 
-                    if (targetElement) {
-                        const headerOffset = document.querySelector("header").offsetHeight; // Adjust for fixed header height
-                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-                        const offsetPosition = elementPosition - headerOffset;
+                if (targetElement) {
+                    // Adjust the scroll position for fixed header
+                    const headerOffset = document.querySelector("header").offsetHeight; // Get height of header
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY; // Get the element's position
+                    const offsetPosition = elementPosition - headerOffset; // Adjust position to avoid being hidden behind header
 
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth" // Smooth scrolling behavior
-                        });
+                    // Scroll to the adjusted position with smooth scrolling
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth" // Enable smooth scrolling
+                    });
+
+                    // For browsers that do not support smooth scroll, use a polyfill or fallback solution
+                    if (!('scrollBehavior' in document.documentElement.style)) {
+                        // Fallback for browsers that do not support smooth scroll
+                        window.scrollTo(0, offsetPosition);
                     }
-                });
+                }
             });
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
